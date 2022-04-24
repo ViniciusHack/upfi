@@ -33,10 +33,10 @@ export default function Home(): JSX.Element {
       id: '1',
     },
     {
-      title: 'Doge',
-      description: 'The best doge',
-      url: 'https://i.ibb.co/K6DZdXc/minh-pham-LTQMgx8t-Yq-M-unsplash.jpg',
-      ts: 1620222828380000,
+      title: 'Cachorrinho gif',
+      description: 'A Gracie é top',
+      url: 'https://i.ibb.co/r3NbmgH/ezgif-3-54a30c130cef.gif',
+      ts: 1620222828390000,
       id: '2',
     },
     {
