@@ -1,4 +1,5 @@
 import {
+  Box,
   Image,
   Link,
   Modal,
@@ -20,12 +21,16 @@ export function ModalViewImage({
 }: ModalViewImageProps): JSX.Element {
   // TODO MODAL WITH IMAGE AND EXTERNAL LINK
   return (
-    <Modal onClose={onClose} isOpen={isOpen}>
+    <Modal autoFocus={false} isCentered onClose={onClose} isOpen={isOpen}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalBody>
-          <Image src={imgUrl} />
-          <Link href={imgUrl} />
+      <ModalContent bg="pGray.800" w="auto" maxW="900px">
+        <ModalBody p={0}>
+          <Image src={imgUrl} maxW="900px" maxH="600px" />
+          <Box w="100%" py="2" px="10px">
+            <Link isExternal href={imgUrl}>
+              {imgUrl}
+            </Link>
+          </Box>
         </ModalBody>
       </ModalContent>
     </Modal>
