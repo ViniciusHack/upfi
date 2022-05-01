@@ -44,7 +44,7 @@ const TextInputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
         pr={8}
         {...rest}
       />
-
+      {console.log(error)}
       {!!error && (
         <Tooltip label={error.message} bg="red.500">
           <FormErrorMessage ml={-6} mt={0} zIndex="tooltip">

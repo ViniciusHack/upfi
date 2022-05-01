@@ -21,23 +21,28 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
       // lessThan10MB:
     },
     title: {
-      // TODO REQUIRED, MIN AND MAX LENGTH VALIDATIONS
       required: {
         value: true,
-        message: 'This field is required',
+        message: 'Este campo é obrigatório',
+      },
+      minLength: {
+        value: 2,
+        message: 'Muito pequeno',
       },
       maxLength: {
-        value: 2,
-        message: 'Too much small',
+        value: 20,
+        message: 'Muito longo',
       },
-      minLength: 20,
     },
     description: {
       required: {
         value: true,
-        message: 'This field is required',
+        message: 'Este campo é obrigatório',
       },
-      maxLength: 65,
+      maxLength: {
+        value: 65,
+        message: 'Muito longo',
+      },
     },
   };
 
@@ -52,7 +57,6 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const { register, handleSubmit, reset, formState, setError, trigger } =
     useForm();
   const { errors } = formState;
-
   console.log(errors);
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
@@ -92,6 +96,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           setLocalImageUrl={setLocalImageUrl}
           setError={setError}
           trigger={trigger}
+          error={errors.image}
           // TODO SEND IMAGE ERRORS
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
           {...register('image')}
@@ -100,6 +105,8 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         <TextInput
           placeholder="Título da imagem..."
           name="title"
+          error={errors.title}
+          {...register('title', formValidations.title)}
           // TODO SEND TITLE ERRORS
           // TODO REGISTER TITLE INPUT WITH VALIDATIONS
         />
@@ -107,7 +114,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         <TextInput
           placeholder="Descrição da imagem..."
           name="description"
-          error={errors[2]}
+          error={errors.description}
           {...register('description', formValidations.description)}
           // TODO SEND DESCRIPTION ERRORS
           // TODO REGISTER DESCRIPTION INPUT WITH VALIDATIONS
