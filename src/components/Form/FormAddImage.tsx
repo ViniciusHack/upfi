@@ -1,6 +1,6 @@
 import { Box, Button, Stack, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { RegisterOptions, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import { FileInput } from '../Input/FileInput';
 import { TextInput } from '../Input/TextInput';
@@ -9,15 +9,38 @@ interface FormAddImageProps {
   closeModal: () => void;
 }
 
+type FormValidations = {
+  image: RegisterOptions;
+  title: RegisterOptions;
+  description: RegisterOptions;
+};
+
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const [imageUrl, setImageUrl] = useState('');
   const [localImageUrl, setLocalImageUrl] = useState('');
   const toast = useToast();
 
-  const formValidations = {
+  const imageValidation = (image: File): any => {
+    const formats = ['png', 'jpeg', 'gif'];
+    const lessThan10MB = image.size <= 10000000;
+    const acceptedFormats = formats.some(
+      extension => `image/${extension}` === image.type,
+    ); // ${'jpeg' || 'png' || 'gif'}
+    if (!lessThan10MB) {
+      return 'O arquivo deve ser menor que 10MB';
+    }
+    if (!acceptedFormats) {
+      return 'Somente são aceitos arquivos PNG, JPEG e GIF';
+    }
+    return true;
+  };
+
+  const formValidations: FormValidations = {
     image: {
       // TODO REQUIRED, LESS THAN 10 MB AND ACCEPTED FORMATS VALIDATIONS
       required: true,
+      // validate: files => imageValidation(files),
+      validate: files => imageValidation(files[0]),
       // lessThan10MB:
     },
     title: {
@@ -57,16 +80,15 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const { register, handleSubmit, reset, formState, setError, trigger } =
     useForm();
   const { errors } = formState;
-  console.log(errors);
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
     try {
       // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
       if (!imageUrl) {
         toast({
-          title: "Image doesn't exists",
+          title: 'URL da imagem não existe',
           status: 'error',
-          duration: 6000,
+          duration: 3000,
           isClosable: true,
         });
       }
@@ -75,7 +97,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     } catch {
       // TODO SHOW ERROR TOAST IF SUBMIT FAILED
       toast({
-        title: 'Failed to submit',
+        title: 'Falha ao enviar',
         status: 'error',
         duration: 6000,
         isClosable: true,
@@ -99,7 +121,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           error={errors.image}
           // TODO SEND IMAGE ERRORS
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
-          {...register('image')}
+          {...register('image', formValidations.image)}
         />
 
         <TextInput
