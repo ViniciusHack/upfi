@@ -4,6 +4,7 @@ import {
   Image,
   Skeleton,
   SkeletonText,
+  // eslint-disable-next-line prettier/prettier
   Text
 } from '@chakra-ui/react';
 import { useState } from 'react';

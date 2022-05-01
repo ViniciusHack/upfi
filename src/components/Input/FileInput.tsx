@@ -1,32 +1,33 @@
+/* eslint-disable prettier/prettier */
 import {
   Box,
-  FormLabel,
   CircularProgress,
   CircularProgressLabel,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Icon,
   Image,
   Text,
-  FormControl,
-  FormErrorMessage,
-  Flex,
-  useToast,
   Tooltip,
+  useToast
 } from '@chakra-ui/react';
 import axios, { AxiosRequestConfig, CancelTokenSource } from 'axios';
 import {
-  useState,
-  SetStateAction,
   Dispatch,
-  ForwardRefRenderFunction,
   forwardRef,
+  ForwardRefRenderFunction,
+  SetStateAction,
   useCallback,
   useEffect,
+  useState
 } from 'react';
 import {
   FieldError,
   FieldValues,
   UseFormSetError,
-  UseFormTrigger,
+  UseFormTrigger
 } from 'react-hook-form';
 import { FiAlertCircle, FiPlus } from 'react-icons/fi';
 import { api } from '../../services/api';
@@ -39,7 +40,7 @@ export interface FileInputProps {
   setLocalImageUrl: Dispatch<SetStateAction<string>>;
   setError: UseFormSetError<FieldValues>;
   onChange: (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => Promise<boolean | void>;
   trigger: UseFormTrigger<FieldValues>;
 }
@@ -59,13 +60,13 @@ const FileInputBase: ForwardRefRenderFunction<
     trigger,
     ...rest
   },
-  ref
+  ref,
 ) => {
   const toast = useToast();
   const [progress, setProgress] = useState(0);
   const [isSending, setIsSending] = useState(false);
   const [cancelToken, setCancelToken] = useState<CancelTokenSource>(
-    {} as CancelTokenSource
+    {} as CancelTokenSource,
   );
 
   const handleImageUpload = useCallback(
@@ -103,7 +104,7 @@ const FileInputBase: ForwardRefRenderFunction<
         const response = await api.post(
           'https://api.imgbb.com/1/upload',
           formData,
-          config
+          config,
         );
 
         setImageUrl(response.data.data.url);
@@ -123,7 +124,7 @@ const FileInputBase: ForwardRefRenderFunction<
         setProgress(0);
       }
     },
-    [onChange, setError, setImageUrl, setLocalImageUrl, trigger, toast]
+    [onChange, setError, setImageUrl, setLocalImageUrl, trigger, toast],
   );
 
   useEffect(() => {

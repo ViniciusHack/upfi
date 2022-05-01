@@ -1,12 +1,11 @@
-import { screen, render, fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { ChakraProvider } from '@chakra-ui/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import AxiosMock from 'axios-mock-adapter';
-
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Home from '../../pages/index';
-import { theme } from '../../styles/theme';
 import { api } from '../../services/api';
+import { theme } from '../../styles/theme';
 
 const apiMock = new AxiosMock(api);
 
@@ -75,7 +74,7 @@ describe('Home page', () => {
     render(<Home />, { wrapper });
 
     expect(
-      screen.getByRole('heading', { name: 'Carregando aplicação...' })
+      screen.getByRole('heading', { name: 'Carregando aplicação...' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
@@ -92,10 +91,10 @@ describe('Home page', () => {
     render(<Home />, { wrapper });
 
     expect(
-      await screen.findByText('Infelizmente ocorreu um erro =(')
+      await screen.findByText('Infelizmente ocorreu um erro =('),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Clique aqui para tentar novamente' })
+      screen.getByRole('button', { name: 'Clique aqui para tentar novamente' }),
     ).toBeInTheDocument();
   });
 
@@ -157,7 +156,7 @@ describe('Home page', () => {
     expect(await screen.findByText('Abrir original')).toBeInTheDocument();
     expect(screen.getByText('Abrir original')).toHaveAttribute(
       'href',
-      'LOAD_SUCCESS_SRC'
+      'LOAD_SUCCESS_SRC',
     );
   });
 
@@ -379,10 +378,10 @@ describe('Home page', () => {
 
     expect(await screen.findByText('Flying forever')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Rocket League' })
+      screen.getByRole('heading', { name: 'Rocket League' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('img', { name: 'Rocket League' })
+      screen.getByRole('img', { name: 'Rocket League' }),
     ).toBeInTheDocument();
 
     expect(loadMoreButton).not.toBeInTheDocument();

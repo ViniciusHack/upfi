@@ -1,9 +1,7 @@
 import { Box, Button, Stack, useToast } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { api } from '../../services/api';
 import { FileInput } from '../Input/FileInput';
 import { TextInput } from '../Input/TextInput';
 
@@ -19,12 +17,27 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const formValidations = {
     image: {
       // TODO REQUIRED, LESS THAN 10 MB AND ACCEPTED FORMATS VALIDATIONS
+      required: true,
+      // lessThan10MB:
     },
     title: {
       // TODO REQUIRED, MIN AND MAX LENGTH VALIDATIONS
+      required: {
+        value: true,
+        message: 'This field is required',
+      },
+      maxLength: {
+        value: 2,
+        message: 'Too much small',
+      },
+      minLength: 20,
     },
     description: {
-      // TODO REQUIRED, MAX LENGTH VALIDATIONS
+      required: {
+        value: true,
+        message: 'This field is required',
+      },
+      maxLength: 65,
     },
   };
 
@@ -33,28 +46,40 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     // TODO MUTATION API POST REQUEST,
     {
       // TODO ONSUCCESS MUTATION
-    }
+    },
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    setError,
-    trigger,
-  } = useForm();
+  const { register, handleSubmit, reset, formState, setError, trigger } =
+    useForm();
   const { errors } = formState;
+
+  console.log(errors);
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
     try {
       // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
+      if (!imageUrl) {
+        toast({
+          title: "Image doesn't exists",
+          status: 'error',
+          duration: 6000,
+          isClosable: true,
+        });
+      }
       // TODO EXECUTE ASYNC MUTATION
       // TODO SHOW SUCCESS TOAST
     } catch {
       // TODO SHOW ERROR TOAST IF SUBMIT FAILED
+      toast({
+        title: 'Failed to submit',
+        status: 'error',
+        duration: 6000,
+        isClosable: true,
+      });
     } finally {
       // TODO CLEAN FORM, STATES AND CLOSE MODAL
+      reset();
+      closeModal();
     }
   };
 
@@ -69,16 +94,21 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           trigger={trigger}
           // TODO SEND IMAGE ERRORS
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
+          {...register('image')}
         />
 
         <TextInput
           placeholder="Título da imagem..."
+          name="title"
           // TODO SEND TITLE ERRORS
           // TODO REGISTER TITLE INPUT WITH VALIDATIONS
         />
 
         <TextInput
           placeholder="Descrição da imagem..."
+          name="description"
+          error={errors[2]}
+          {...register('description', formValidations.description)}
           // TODO SEND DESCRIPTION ERRORS
           // TODO REGISTER DESCRIPTION INPUT WITH VALIDATIONS
         />

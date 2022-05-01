@@ -1,13 +1,10 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
+  Modal, ModalBody,
+  ModalCloseButton, ModalContent,
+  ModalHeader, ModalOverlay
 } from '@chakra-ui/react';
-
 import { FormAddImage } from '../Form/FormAddImage';
+
 
 interface ModalAddImageProps {
   isOpen: boolean;
