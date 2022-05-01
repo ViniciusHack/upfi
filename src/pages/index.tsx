@@ -26,7 +26,8 @@ export default function Home(): JSX.Element {
 
   const formattedData = useMemo(() => {
     // TODO FORMAT AND FLAT DATA ARRAY
-    const items = data?.pages[0].data;
+    console.log(data);
+    const items = data?.pages[0].data.data;
     return items;
   }, [data]);
 

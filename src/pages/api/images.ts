@@ -121,11 +121,10 @@ export default async function handler(
           id: item.ref.id,
         }));
 
-        // return res.json({
-        //   data: formattedData,
-        //   after: response.after ? response.after[0].id : null,
-        // }); to uncomment later
-        return res.json(mockData);
+        return res.json({
+          data: formattedData,
+          after: response.after ? response.after[0].id : null,
+        });
       })
       .catch(err => {
         console.log(err);

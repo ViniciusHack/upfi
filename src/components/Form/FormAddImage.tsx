@@ -2,6 +2,7 @@ import { Box, Button, Stack, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { RegisterOptions, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
+import { api } from '../../services/api';
 import { FileInput } from '../Input/FileInput';
 import { TextInput } from '../Input/TextInput';
 
@@ -13,6 +14,11 @@ type FormValidations = {
   image: RegisterOptions;
   title: RegisterOptions;
   description: RegisterOptions;
+};
+
+type Image = {
+  title: string;
+  description: string;
 };
 
 export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
@@ -37,11 +43,11 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
 
   const formValidations: FormValidations = {
     image: {
-      // TODO REQUIRED, LESS THAN 10 MB AND ACCEPTED FORMATS VALIDATIONS
-      required: true,
-      // validate: files => imageValidation(files),
+      required: {
+        value: true,
+        message: 'Este campo é obrigatório',
+      },
       validate: files => imageValidation(files[0]),
-      // lessThan10MB:
     },
     title: {
       required: {
@@ -70,18 +76,27 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    // TODO MUTATION API POST REQUEST,
-    {
-      // TODO ONSUCCESS MUTATION
-    },
-  );
+  // const mutation = useMutation(
+  //   // TODO MUTATION API POST REQUEST,
+  //   {
+  //     // TODO ONSUCCESS MUTATION
+  //   },
+  // );
+  const mutation = useMutation(async ({ title, description }: Image) => {
+    console.log(imageUrl, localImageUrl);
+    api.post('/api/images', {
+      title,
+      description,
+      url: imageUrl,
+    });
+  });
 
   const { register, handleSubmit, reset, formState, setError, trigger } =
     useForm();
   const { errors } = formState;
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
+    console.log(data);
     try {
       // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
       if (!imageUrl) {
@@ -93,6 +108,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         });
       }
       // TODO EXECUTE ASYNC MUTATION
+      mutation.mutateAsync(data as any);
       // TODO SHOW SUCCESS TOAST
     } catch {
       // TODO SHOW ERROR TOAST IF SUBMIT FAILED
