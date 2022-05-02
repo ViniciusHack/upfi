@@ -76,50 +76,58 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   };
 
   const queryClient = useQueryClient();
-  // const mutation = useMutation(
-  //   // TODO MUTATION API POST REQUEST,
-  //   {
-  //     // TODO ONSUCCESS MUTATION
-  //   },
-  // );
-  const mutation = useMutation(async ({ title, description }: Image) => {
-    console.log(imageUrl, localImageUrl);
-    api.post('/api/images', {
-      title,
-      description,
-      url: imageUrl,
-    });
-  });
+  const mutation = useMutation(
+    async ({ title, description }: Image) => {
+      return api.post('/api/images', {
+        title,
+        description,
+        url: imageUrl,
+      });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('images');
+      },
+    },
+  );
 
   const { register, handleSubmit, reset, formState, setError, trigger } =
     useForm();
   const { errors } = formState;
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
-    console.log(data);
     try {
-      // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
       if (!imageUrl) {
         toast({
-          title: 'URL da imagem não existe',
+          title: 'Imagem não adicionada',
+          description:
+            'É preciso adicionar e aguardar o upload de uma imagem antes de realizar o cadastro.',
           status: 'error',
           duration: 3000,
           isClosable: true,
         });
+        return;
       }
-      // TODO EXECUTE ASYNC MUTATION
-      mutation.mutateAsync(data as any);
-      // TODO SHOW SUCCESS TOAST
-    } catch {
-      // TODO SHOW ERROR TOAST IF SUBMIT FAILED
+      await mutation.mutateAsync(data as Image);
       toast({
-        title: 'Falha ao enviar',
+        title: 'Imagem cadastrada',
+        description: 'Sua imagem foi cadastrada com sucesso.',
+        duration: 6000,
+        isClosable: true,
+        status: 'success',
+      });
+    } catch {
+      toast({
+        title: 'Falha no cadastro',
+        description: 'Ocorreu um erro ao tentar cadastrar a sua imagem.',
         status: 'error',
         duration: 6000,
         isClosable: true,
       });
     } finally {
       // TODO CLEAN FORM, STATES AND CLOSE MODAL
+      setImageUrl('');
+      setLocalImageUrl('');
       reset();
       closeModal();
     }

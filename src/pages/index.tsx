@@ -2,7 +2,9 @@ import { Box } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { CardList } from '../components/CardList';
+import { Error } from '../components/Error';
 import { Header } from '../components/Header';
+import { Loading } from '../components/Loading';
 import { api } from '../services/api';
 
 export default function Home(): JSX.Element {
@@ -25,34 +27,27 @@ export default function Home(): JSX.Element {
   );
 
   const formattedData = useMemo(() => {
-    // TODO FORMAT AND FLAT DATA ARRAY
-    console.log(data);
-    const items = data?.pages[0].data.data;
-    return items;
+    const formattedItems = data?.pages
+      .map(page => {
+        return page.data.data;
+      })
+      .flat();
+    return formattedItems;
   }, [data]);
 
-  // TODO RENDER LOADING SCREEN
-
-  // TODO RENDER ERROR SCREEN
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <Error />;
+  }
 
   return (
     <>
       <Header />
 
       <Box maxW={1120} px={20} mx="auto" my={20}>
-        <CardList
-          cards={
-            formattedData || [
-              {
-                title: 'Doge',
-                description: 'The best doge',
-                url: 'https://i.ibb.co/xmj1fVB/2-DOWHILE21-1080x2560.png',
-                ts: 1620222828340000,
-                id: '294961059684418048',
-              },
-            ]
-          }
-        />
+        <CardList cards={formattedData} />
         {/* TODO RENDER LOAD MORE BUTTON IF DATA HAS NEXT PAGE */}
       </Box>
     </>
