@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { CardList } from '../components/CardList';
@@ -18,11 +18,16 @@ export default function Home(): JSX.Element {
   } = useInfiniteQuery(
     'images',
     // TODO AXIOS REQUEST WITH PARAM
-    ({ pageParam = null }) => {
+    async ({ pageParam = null }) => {
       // TODO GET AND RETURN NEXT PAGE PARAM
-      return api.get('http://localhost:3000/api/images', {
+      const response = await api.get('/api/images', {
         params: { after: pageParam },
       });
+      return response;
+    },
+    {
+      getNextPageParam: lastPage =>
+        lastPage.data.after ? lastPage.data.after : null,
     },
   );
 
@@ -44,11 +49,21 @@ export default function Home(): JSX.Element {
 
   return (
     <>
+      {console.log(hasNextPage, data)}
       <Header />
 
       <Box maxW={1120} px={20} mx="auto" my={20}>
         <CardList cards={formattedData} />
         {/* TODO RENDER LOAD MORE BUTTON IF DATA HAS NEXT PAGE */}
+        {hasNextPage && (
+          <Button
+            mt="40px"
+            onClick={() => fetchNextPage()}
+            disabled={!!isFetchingNextPage}
+          >
+            {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+          </Button>
+        )}
       </Box>
     </>
   );
