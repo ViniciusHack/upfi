@@ -28,7 +28,7 @@ export function ModalViewImage({
           <Image src={imgUrl} maxW="900px" maxH="600px" />
           <Box w="100%" py="2" px="10px">
             <Link isExternal href={imgUrl}>
-              {imgUrl}
+              Abrir original
             </Link>
           </Box>
         </ModalBody>
