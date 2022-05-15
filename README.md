@@ -5,9 +5,9 @@
 <h3 align="center">
   upfi
 </h3>
-Gif
 <p align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ViniciusHack/upfi">
+![delete](https://user-images.githubusercontent.com/60555584/168455459-4ef24329-5e45-47b6-9ca9-01577d384fc7.gif)
 
   <a href="https://www.linkedin.com/in/ViniciusHack/">
     <img alt="Made by" src="https://img.shields.io/badge/made%20by-Vinícius%20Hack-gree">
@@ -37,6 +37,8 @@ We'd need to edit these files:
 - src/components/CardList.tsx
 
 After editing, we'd need to make it pass in every test.
+
+![delete](https://user-images.githubusercontent.com/60555584/168455448-aacd9b2e-c5ec-4b9b-a38f-38d0aba7a7e8.gif)
 
 ## 🔨 Features
 - Image uploading
