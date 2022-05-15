@@ -7,8 +7,6 @@
 </h3>
 <p align="center">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ViniciusHack/upfi">
-![delete](https://user-images.githubusercontent.com/60555584/168455459-4ef24329-5e45-47b6-9ca9-01577d384fc7.gif)
-
   <a href="https://www.linkedin.com/in/ViniciusHack/">
     <img alt="Made by" src="https://img.shields.io/badge/made%20by-Vinícius%20Hack-gree">
   </a>
@@ -26,7 +24,6 @@
   <a href="#-getting-started">Getting started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-technologies">Technologies</a>
 </p>
-
 ## 👨🏻‍💻 About the project
 **upfi** is a website for image uploading
 
